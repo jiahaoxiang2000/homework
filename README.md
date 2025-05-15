@@ -10,6 +10,7 @@ This repository is for storing and organizing homework code assignments.
 ## Contents
 
 Currently contains:
+
 - cloud/ - Cloud computing related assignments
 
 ## Usage
