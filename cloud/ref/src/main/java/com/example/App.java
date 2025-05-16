@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.regions.servicemetadata.ThinclientServiceMetadata;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -15,6 +14,16 @@ import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 public class App {
     private final S3Client s3;
 
+    /**
+     * Main entry point for the application.
+     *
+     * This method creates an S3 client, defines the mapping of file types to their extensions,
+     * pulls all files from the S3 bucket, counts the number of each file type, and updates the
+     * HTML file in the S3 bucket with the statistics. If an error occurs while pulling files,
+     * it prints an error message to standard error.
+     *
+     * @param args Command-line arguments (not used)
+     */
     public static void main(String[] args) {
         // Create S3 client
         S3Client s3 = S3Client.builder().region(Region.US_EAST_1).build();
@@ -38,14 +47,24 @@ public class App {
         }
     }
 
+    /**
+     * Constructor for the App class.
+     *
+     * Initializes the App instance with the provided S3 client.
+     *
+     * @param s3 The S3Client instance to use for S3 operations
+     */
     public App(S3Client s3) {
         this.s3 = s3;
     }
 
     /**
-     * Pull files from S3 bucket
+     * Pull files from the S3 bucket.
      *
-     * @return List of file names
+     * This method lists all objects in the specified S3 bucket and returns a list of their keys (file names).
+     * If an error occurs during the listing, it prints an error message and returns null.
+     *
+     * @return List of file names in the S3 bucket, or null if an error occurs
      */
     private List<String> pullAllFiles() {
         try {
@@ -64,33 +83,48 @@ public class App {
     }
 
     /**
-     * Accumulate the count of each file type according to the extension
+     * Accumulate the count of each file type according to the extension.
      *
-     * @param files    List of files
-     * @param typesMap Map of file types and their corresponding extensions
-     * @return Map of file types and their counts
+     * This method iterates through the list of file names and counts how many files
+     * belong to each type as defined in the typesMap. The typesMap maps a human-readable
+     * type name (e.g., "Web", "Text") to a file extension (e.g., "html", "txt").
+     *
+     * For each file, the method extracts the extension and increments the count for the
+     * corresponding type. If a file's extension does not match any in the typesMap, it is
+     * counted as "Other". The final map includes all types from typesMap and an "Other"
+     * category, with their respective counts.
+     *
+     * @param files    List of file names (e.g., ["index.html", "doc.txt", "img.jpg"])
+     * @param typesMap Map of type names to file extensions (e.g., {"Web": "html", ...})
+     * @return Map of type names to their counts, including "Other"
      */
     private Map<String, Integer> typeCount(List<String> files, Map<String, String> typesMap) {
+        // Initialize the count map with all types set to 0
         Map<String, Integer> typeCount = typesMap.keySet().stream()
                 .collect(Collectors.toMap(type -> type, type -> 0));
-        // Count the number of each type
+        // Count the number of each type by matching file extensions
         for (String file : files) {
-            // Get the extension of the file
+            // Extract the file extension (substring after the last dot)
             String type = file.substring(file.lastIndexOf(".") + 1);
-            // For each file type, increment the count if the extension matches
+            // For each type, increment the count if the extension matches
             for (Map.Entry<String, String> entry : typesMap.entrySet()) {
                 if (entry.getValue().equals(type)) {
                     typeCount.put(entry.getKey(), typeCount.get(entry.getKey()) + 1);
                 }
             }
         }
-        // Add count for "Other" type
+        // Count files that do not match any known type as "Other"
         typeCount.put("Other", files.size() - typeCount.values().stream().reduce(0, Integer::sum));
         return typeCount;
     }
 
     /**
-     * Update the HTML file with the file types and their counts
+     * Update the HTML file with the file types and their counts.
+     *
+     * This method generates an HTML page that displays the statistics of file types in the S3 bucket.
+     * The generated HTML includes a styled table with counts for each file type, a refresh button,
+     * and JavaScript to dynamically update the statistics. The HTML is then uploaded to the S3 bucket
+     * as "home.html".
      *
      * @param typeCount Map of file types and their counts
      */
