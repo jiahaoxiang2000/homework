@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 Bucket File Statistics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #0066cc;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats-container {
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .file-type {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .file-type:last-child {
+            border-bottom: none;
+        }
+        .file-count {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .refresh-button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .refresh-button:hover {
+            background-color: #0055aa;
+        }
+        .last-updated {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>S3 Bucket File Statistics</h1>
+    
+    <div class="stats-container">
+        <div class="file-type">
+            <span>Web Files (.html)</span>
+            <span class="file-count" id="html-count">-</span>
+        </div>
+        <div class="file-type">
+            <span>Text Files (.txt)</span>
+            <span class="file-count" id="txt-count">-</span>
+        </div>
+        <div class="file-type">
+            <span>Image Files (.jpg)</span>
+            <span class="file-count" id="jpg-count">-</span>
+        </div>
+        <div class="file-type">
+            <span>Excel Files (.xlsx)</span>
+            <span class="file-count" id="xlsx-count">-</span>
+        </div>
+        <div class="file-type">
+            <span>Other Files (.pdf, .xml, etc.)</span>
+            <span class="file-count" id="other-count">-</span>
+        </div>
+    </div>
+
+    <button class="refresh-button" onclick="fetchFileStats()">Refresh Stats</button>
+    <p class="last-updated" id="last-updated"></p>
+
+    <!-- Import Axios from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // AWS SDK configuration
+        // You'll need to configure the AWS SDK with your region and appropriate credentials
+        // For a public website, you should use AWS Cognito or similar for secure access
+        
+        // Function to fetch file statistics from S3 bucket
+        function fetchFileStats() {
+            // In a real implementation, you would use the AWS SDK for JavaScript
+            // Here we'll simulate this with a direct call to an AWS Lambda function
+            // that would have permission to list objects in the S3 bucket
+            
+            // URL to your API Gateway endpoint that triggers Lambda
+            const apiUrl = 'https://krrjsw60q3.execute-api.us-east-1.amazonaws.com/publish';
+            
+            axios.get(apiUrl)
+                .then(response => {
+                    // Parse the nested JSON string in the body property
+                    const responseData = response.data;
+                    const data = JSON.parse(responseData.body);
+                    
+                    // Update counts in the UI
+                    document.getElementById('html-count').textContent = data.htmlCount || 0;
+                    document.getElementById('txt-count').textContent = data.txtCount || 0;
+                    document.getElementById('jpg-count').textContent = data.jpgCount || 0;
+                    document.getElementById('xlsx-count').textContent = data.xlsxCount || 0;
+                    document.getElementById('other-count').textContent = data.otherCount || 0;
+                    
+                    // Update last refreshed time
+                    const now = new Date();
+                    document.getElementById('last-updated').textContent = 
+                        `Last updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching file statistics:', error);
+                    alert('Failed to load file statistics. Please try again later.');
+                });
+        }
+        
+        // Fetch file stats when page loads
+        document.addEventListener('DOMContentLoaded', fetchFileStats);
+    </script>
+</body>
+</html>

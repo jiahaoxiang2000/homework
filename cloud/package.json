@@ -1,0 +1,12 @@
+{
+  "name": "s3-file-counter-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to count files in an S3 bucket by type",
+  "main": "listS3ObjectsLambda.js",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.433.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
