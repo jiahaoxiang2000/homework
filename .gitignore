@@ -100,3 +100,5 @@ Thumbs.db
 # *.pdf
 # *.doc
 # *.docx
+
+temp/*

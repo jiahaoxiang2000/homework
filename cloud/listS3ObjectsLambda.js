@@ -8,7 +8,7 @@ export const handler = async (event) => {
     const s3 = new S3();
     
     // Set your bucket name here
-    const bucketName = 'YOUR-BUCKET-NAME';
+    const bucketName = 'zliang19a1bucket';
     
     try {
         // Initialize counters for different file types
