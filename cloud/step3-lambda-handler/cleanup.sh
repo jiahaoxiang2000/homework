@@ -28,20 +28,15 @@ aws lambda delete-function --function-name $LAMBDA_FUNCTION_NAME --region $REGIO
 echo "Deleting DynamoDB table: $TABLE_NAME"
 aws dynamodb delete-table --table-name $TABLE_NAME --region $REGION
 
-# Step 5: Detach policies from IAM role
-echo "Detaching policies from IAM role: $ROLE_NAME"
-aws iam detach-role-policy --role-name $ROLE_NAME --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-aws iam detach-role-policy --role-name $ROLE_NAME --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
-aws iam detach-role-policy --role-name $ROLE_NAME --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-
-# Step 6: Delete IAM role
-echo "Deleting IAM role: $ROLE_NAME"
-aws iam delete-role --role-name $ROLE_NAME
+# Step 5: Skip IAM cleanup in AWS Academy (restricted permissions)
+echo "Skipping IAM role cleanup (AWS Academy environment)"
+echo "Note: In AWS Academy, IAM roles are managed by the lab environment"
+echo "The role '$ROLE_NAME' will be cleaned up when the lab session ends"
 
 echo "Cleanup completed!"
 echo ""
-echo "All resources have been removed:"
+echo "Resources cleaned up:"
 echo "- DynamoDB Table: $TABLE_NAME (deleted)"
 echo "- S3 Bucket: $BUCKET_NAME (deleted)"
-echo "- IAM Role: $ROLE_NAME (deleted)"
 echo "- Lambda Function: $LAMBDA_FUNCTION_NAME (deleted)"
+echo "- IAM Role: $ROLE_NAME (will be cleaned up when lab session ends)"
