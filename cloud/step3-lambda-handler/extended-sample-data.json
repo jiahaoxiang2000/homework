@@ -1,0 +1,32 @@
+[
+    {
+        "ProductName": "Sony TV",
+        "Price": 12000,
+        "Review": "I loved this product and have been using for 5 years and no issue",
+        "Rating": 4.85
+    },
+    {
+        "ProductName": "Bravia Microwave",
+        "Price": 350,
+        "Review": "Good value and does the job",
+        "Rating": 4.12
+    },
+    {
+        "ProductName": "Lenovo Thinpad",
+        "Price": 2400,
+        "Review": "Not happy with it and had to return",
+        "Rating": 2.45
+    },
+    {
+        "ProductName": "Samsung Galaxy S21",
+        "Price": 899,
+        "Review": "Excellent phone with great camera quality",
+        "Rating": 4.7
+    },
+    {
+        "ProductName": "Apple MacBook Pro",
+        "Price": 3200,
+        "Review": "Perfect for development work, fast and reliable",
+        "Rating": 4.9
+    }
+]
