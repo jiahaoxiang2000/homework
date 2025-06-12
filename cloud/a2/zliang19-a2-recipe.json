@@ -1,0 +1,109 @@
+[
+  {
+    "Action": {
+      "Operation": "FILL_WITH_EMPTY",
+      "Parameters": {
+        "sourceColumn": "store_and_fwd_flag"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "FILL_WITH_EMPTY",
+      "Parameters": {
+        "sourceColumn": "ehail_fee"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "FILL_WITH_MOST_FREQUENT",
+      "Parameters": {
+        "sourceColumn": "passenger_count"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "FLAG_DUPLICATE_ROWS",
+      "Parameters": {
+        "duplicateRowsCount": "0",
+        "targetColumn": "duplicate_row_flagged"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "FLAG_OUTLIERS",
+      "Parameters": {
+        "outlierStrategy": "Z_SCORE",
+        "sourceColumn": "trip_distance",
+        "targetColumn": "trip_distance_outlier_flagged",
+        "threshold": "3"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "FLAG_OUTLIERS",
+      "Parameters": {
+        "outlierStrategy": "Z_SCORE",
+        "sourceColumn": "extra",
+        "targetColumn": "extra_outlier_flagged",
+        "threshold": "3"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "MONTH",
+      "Parameters": {
+        "dateTimeFormat": "yyyy-mm-dd*HH:MM:SS",
+        "functionStepType": "MONTH",
+        "sourceColumn": "lpep_pickup_datetime",
+        "targetColumn": "lpep_pickup_datetime_MONTH"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "WEEK_DAY",
+      "Parameters": {
+        "dateTimeFormat": "yyyy-mm-dd*HH:MM:SS",
+        "functionStepType": "WEEK_DAY",
+        "sourceColumn": "lpep_pickup_datetime",
+        "targetColumn": "lpep_pickup_datetime_WEEKDAY"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "GROUP_BY",
+      "Parameters": {
+        "groupByAggFunctionOptions": "[{\"sourceColumnName\":\"fare_amount\",\"targetColumnName\":\"fare_amount_sum\",\"targetColumnDataType\":\"double\",\"functionName\":\"SUM\"}]",
+        "sourceColumns": "[\"lpep_pickup_datetime_WEEKDAY\"]",
+        "useNewDataFrame": "false"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "GROUP_BY",
+      "Parameters": {
+        "groupByAggFunctionOptions": "[{\"sourceColumnName\":\"trip_distance\",\"targetColumnName\":\"trip_of_week\",\"targetColumnDataType\":\"double\",\"functionName\":\"COUNT\"}]",
+        "sourceColumns": "[\"lpep_pickup_datetime_WEEKDAY\"]",
+        "useNewDataFrame": "false"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "GROUP_BY",
+      "Parameters": {
+        "groupByAggFunctionOptions": "[{\"sourceColumnName\":\"trip_distance\",\"targetColumnName\":\"trip_of_month\",\"targetColumnDataType\":\"double\",\"functionName\":\"COUNT\"}]",
+        "sourceColumns": "[\"lpep_pickup_datetime_MONTH\"]",
+        "useNewDataFrame": "false"
+      }
+    }
+  }
+]
