@@ -118,7 +118,7 @@ set LAMBDA_ARN (aws lambda get-function --function-name $LAMBDA_FUNCTION_NAME --
 aws s3api put-bucket-notification-configuration \
     --bucket $BUCKET_NAME \
     --notification-configuration "{
-        \"LambdaConfigurations\": [
+        \"LambdaFunctionConfigurations\": [
             {
                 \"Id\": \"ProcessJSONUpload\",
                 \"LambdaFunctionArn\": \"$LAMBDA_ARN\",

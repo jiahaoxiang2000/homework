@@ -157,7 +157,7 @@ aws lambda add-permission \
 aws s3api put-bucket-notification-configuration \
     --bucket yourusernamea2bucket \
     --notification-configuration '{
-        "LambdaConfigurations": [
+        "LambdaFunctionConfigurations": [
             {
                 "Id": "ProcessUpload",
                 "LambdaFunctionArn": "arn:aws:lambda:us-east-1:YOUR_ACCOUNT_ID:function:yourusernamea2app",

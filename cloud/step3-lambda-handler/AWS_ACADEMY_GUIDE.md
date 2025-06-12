@@ -76,7 +76,7 @@ set LAMBDA_ARN (aws lambda get-function --function-name zliang19a2app --query Co
 aws s3api put-bucket-notification-configuration \
     --bucket zliang19a2bucket \
     --notification-configuration "{
-        \"LambdaConfigurations\": [
+        \"LambdaFunctionConfigurations\": [
             {
                 \"Id\": \"ProcessJSONUpload\",
                 \"LambdaFunctionArn\": \"$LAMBDA_ARN\",
