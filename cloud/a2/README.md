@@ -224,6 +224,31 @@ aws logs get-log-events --log-group-name /aws/lambda/yourusernamea2app --log-str
 3. **Memory Issues**: Increase Lambda memory allocation if processing large JSON files
 4. **Parsing Errors**: Check CloudWatch logs for detailed error messages
 
+## Code File Reference
+
+| File Name            | Line Numbers | Description of Code                                        |
+| -------------------- | ------------ | ---------------------------------------------------------- |
+| ProductReview.java   | 10-30        | ProductReview table data model with DynamoDB annotations   |
+| LambdaHandler.java   | 39-55        | Main Lambda handler entry point for processing S3 events   |
+| S3Service.java       | 36-50        | S3 object content reading and file retrieval functionality |
+| DynamoDbService.java | 39-45        | DynamoDB operations for saving ProductReview records       |
+| ParsingService.java  | 31-40        | Content parsing logic for JSON and text file formats       |
+| LambdaHandler.java   | 91-105       | File processing workflow and data storage orchestration    |
+
+### Copy-Paste Format for Word Document
+
+```
+File Name	Line Numbers	Description of Code
+ProductReview.java	10-30	ProductReview table data model with DynamoDB annotations
+LambdaHandler.java	39-55	Main Lambda handler entry point for processing S3 events
+S3Service.java	36-50	S3 object content reading and file retrieval functionality
+DynamoDbService.java	39-45	DynamoDB operations for saving ProductReview records
+ParsingService.java	31-40	Content parsing logic for JSON and text file formats
+LambdaHandler.java	91-105	File processing workflow and data storage orchestration
+```
+
+_Note: Copy the text above and paste into Word, then use "Convert Text to Table" with tab delimiter to create a proper table._
+
 ## File Structure
 
 ```
